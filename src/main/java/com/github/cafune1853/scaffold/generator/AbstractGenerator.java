@@ -18,6 +18,7 @@ public abstract class AbstractGenerator implements Generator {
     private final String artifactId;
     private final String artifactPath;
     private final String resourcePath;
+    private final String basePackage;
     private final boolean needCode;
 
     public AbstractGenerator(String groupId, String artifactId, String suffix, boolean needCode) {
@@ -27,10 +28,12 @@ public abstract class AbstractGenerator implements Generator {
             this.artifactId = artifactId + "-" + suffix;
             this.artifactPath = OUT_PATH + artifactId + File.separator + this.artifactId + File.separator;
             this.resourcePath = OUT_PATH + "raw" + File.separator + suffix + File.separator;
+            this.basePackage = null;
         } else {
             this.artifactId = artifactId;
             this.artifactPath = OUT_PATH + artifactId;
             this.resourcePath = OUT_PATH + "raw" + File.separator;
+            this.basePackage = getPackagePath(".");
         }
     }
 
@@ -38,7 +41,7 @@ public abstract class AbstractGenerator implements Generator {
     public final void build() {
         FileUtil.mkdirs(artifactPath);
         //cp pom
-        FileUtil.cp(resourcePath + File.separator + POM_NAME, artifactPath + File.separator + POM_NAME);
+        FileUtil.cp(resourcePath + POM_NAME, artifactPath + File.separator + POM_NAME);
         if (needCode) {
             FileUtil.create(getMainJavaPath(), ".gitkeeper");
             FileUtil.create(getMainResourcesPath(), ".gitkeeper");
@@ -46,6 +49,36 @@ public abstract class AbstractGenerator implements Generator {
             FileUtil.create(getTestResourcePath(), ".gitkeeper");
         }
         setFiles();
+        copyPackages();
+        copyResources();
+        copyTestPackages();
+        copyTestResources();
+        copyWebapp();
+    }
+    
+    private void copyPackages(){
+        String rawJavaPath = resourcePath + "packages";
+        FileUtil.cpAll(rawJavaPath, getMainJavaPath());
+    }
+    
+    private void copyResources(){
+        String rawResources = resourcePath + "resources";
+        FileUtil.cpAll(rawResources, getMainResourcesPath());
+    }
+    
+    private void copyTestPackages(){
+        String rawTestJavaPath = resourcePath + "testPackages";
+        FileUtil.cpAll(rawTestJavaPath, getTestJavaPath());
+    }
+    
+    private void copyTestResources(){
+        String rawTestResources = resourcePath + "testResources";
+        FileUtil.cpAll(rawTestResources, getTestResourcePath());
+    }
+    
+    private void copyWebapp(){
+        String rawWebApp = resourcePath + "webapp";
+        FileUtil.cpAll(rawWebApp, getWebAppPath());
     }
 
     @Override
@@ -57,6 +90,10 @@ public abstract class AbstractGenerator implements Generator {
 
     protected final String getMainResourcesPath() {
         return this.artifactPath + "src" + File.separator + "main" + File.separator + "resources" + File.separator;
+    }
+    
+    protected final String getWebAppPath(){
+        return this.artifactPath + "src" + File.separator + "main" + File.separator + "webapp" + File.separator;
     }
 
     protected final String getTestJavaPath() {
