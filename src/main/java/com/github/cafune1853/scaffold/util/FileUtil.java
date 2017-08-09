@@ -1,6 +1,8 @@
 package com.github.cafune1853.scaffold.util;
 
 
+import com.github.cafune1853.scaffold.generator.ReplaceEntry;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,57 +60,39 @@ public class FileUtil {
 			}
 		}
 	}
-	
-	public static void mkdirsAndCreateNewFile(final String dirs, final String filePath) throws IOException {
-		final String dirsPath = dirs.endsWith(File.separator) ? dirs : dirs + File.separator;
-		final String fileName = filePath.replace(File.separator, "");
-		File directory = new File(dirsPath);
-		if (!directory.exists()) {
-			if (!directory.mkdirs()) {
-				System.out.println("Create dirs:" + dirs + " fail");
-			}
-		}
-		File file = new File(dirsPath + fileName);
-		if (!file.exists()) {
-			if (!file.createNewFile()) {
-				System.out.println("Create file:" + dirsPath + fileName + " fail");
+
+	public static void replaceAllFiles(String dirs, List<ReplaceEntry> replaceEntryList){
+		File dir = new File(dirs);
+		if(dir.exists() && dir.isDirectory()){
+			File[] allFile = dir.listFiles();
+			for (File file : allFile) {
+				if (file.isDirectory()) {
+					replaceAllFiles(dirs + file.getName() + File.separator, replaceEntryList);
+				} else {
+					handlerReplacement(file, replaceEntryList);
+				}
 			}
 		}
 	}
 	
-	/**
-	 * 从srcFilePath读入所有文本并将对应到replaceEntry的内容替换，最终写入到destFilePath中。
-	 *
-	 * @param srcFilePath:    source file absolutely path
-	 * @param destFilePath:   destination file absolutely path
-	 * @param replaceEntries:
-	 * @throws IOException
-	 * @see ReplaceEntry
-	 */
-	public static void replaceToNewFile(String srcFilePath, String destFilePath, List<ReplaceEntry> replaceEntries) throws IOException {
-		try (Scanner in = new Scanner(new File(srcFilePath)); PrintWriter out = new PrintWriter(destFilePath)) {
-			while (in.hasNextLine()) {
-				String resolved = handlerReplacement(in.nextLine(), replaceEntries);
-				out.println(resolved);
+	private static void handlerReplacement(File file, List<ReplaceEntry> replaceEntries) {
+		StringBuilder stringBuilder = new StringBuilder();
+		try (Scanner scanner = new Scanner(file)){
+			while(scanner.hasNextLine()){
+				String resolved = scanner.nextLine();
+				for (ReplaceEntry re : replaceEntries) {
+					resolved = resolved.replace(re.getKey(), re.getReplaceValue());
+				}
+				stringBuilder.append(resolved);
+				stringBuilder.append("\n");
 			}
+		}catch (IOException ioe){
+			System.out.println(ioe);
 		}
-	}
-	
-	public static String getOutPath() {
-		return FileUtil.class.getClassLoader().getResource("").getFile();
-	}
-	
-	public static void writeString(String destPath, String code) throws IOException {
-		try (PrintWriter printWriter = new PrintWriter(destPath)) {
-			printWriter.println(code);
+		try (PrintWriter printWriter = new PrintWriter(file)){
+			printWriter.print(stringBuilder.toString());
+		}catch (IOException ioe){
+			System.out.println(ioe);
 		}
-	}
-	
-	private static String handlerReplacement(String raw, List<ReplaceEntry> replaceEntries) {
-		String resolved = raw;
-		for (ReplaceEntry re : replaceEntries) {
-			resolved = resolved.replace(re.getKey(), re.getReplaceValue());
-		}
-		return resolved;
 	}
 }
