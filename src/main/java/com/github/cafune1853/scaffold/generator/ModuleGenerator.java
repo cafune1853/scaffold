@@ -10,7 +10,7 @@ import java.util.List;
  * @author doggy
  * Created on 2017-08-08.
  */
-public class PackageGenerator {
+public class ModuleGenerator {
     private static final String POM_NAME = "pom.xml";
     private static final String GIT_IGNORE = ".gitignore";
     private static final String OUT_PATH = FileUtil.class.getClassLoader().getResource("").getFile();
@@ -23,7 +23,7 @@ public class PackageGenerator {
     private final boolean isParent;
     private final List<ReplaceEntry> replaceEntryList;
 
-    public PackageGenerator(String groupId, String artifactId, String suffix, boolean isParent, List<ReplaceEntry> replaceEntryList) {
+    public ModuleGenerator(String groupId, String artifactId, String suffix, boolean isParent, List<ReplaceEntry> replaceEntryList) {
         this.isParent = isParent;
         this.groupId = groupId == null ? "com.github.cafune1853" : groupId;
         this.replaceEntryList = replaceEntryList;

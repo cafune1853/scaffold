@@ -1,6 +1,6 @@
 package com.github.cafune1853.scaffold;
 
-import com.github.cafune1853.scaffold.generator.PackageGenerator;
+import com.github.cafune1853.scaffold.generator.ModuleGenerator;
 import com.github.cafune1853.scaffold.generator.ReplaceEntry;
 import com.github.cafune1853.scaffold.util.StringUtil;
 
@@ -21,15 +21,15 @@ public class Main {
                 new ReplaceEntry("doggy-module", artifactId),
                 new ReplaceEntry("com.doggy.groupId", groupId)
         );
-        PackageGenerator parentGenerator = new PackageGenerator(groupId, artifactId, null, true, replaceEntryList);
+        ModuleGenerator parentGenerator = new ModuleGenerator(groupId, artifactId, null, true, replaceEntryList);
         parentGenerator.build();
-        PackageGenerator commonGenerator = new PackageGenerator(groupId, artifactId, "common", false, replaceEntryList);
+        ModuleGenerator commonGenerator = new ModuleGenerator(groupId, artifactId, "common", false, replaceEntryList);
         commonGenerator.build();
-        PackageGenerator apiGenerator = new PackageGenerator(groupId, artifactId, "api", false, replaceEntryList);
+        ModuleGenerator apiGenerator = new ModuleGenerator(groupId, artifactId, "api", false, replaceEntryList);
         apiGenerator.build();
-        PackageGenerator providerGenerator = new PackageGenerator(groupId, artifactId, "provider", false, replaceEntryList);
+        ModuleGenerator providerGenerator = new ModuleGenerator(groupId, artifactId, "provider", false, replaceEntryList);
         providerGenerator.build();
-        PackageGenerator webGenerator = new PackageGenerator(groupId, artifactId, "web", false, replaceEntryList);
+        ModuleGenerator webGenerator = new ModuleGenerator(groupId, artifactId, "web", false, replaceEntryList);
         webGenerator.build();
     }
 }
