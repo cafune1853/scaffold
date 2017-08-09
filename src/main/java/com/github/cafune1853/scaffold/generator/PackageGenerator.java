@@ -11,8 +11,9 @@ import java.util.List;
  * Created on 2017-08-08.
  */
 public class PackageGenerator {
-    public static final String POM_NAME = "pom.xml";
-    public static final String OUT_PATH = FileUtil.class.getClassLoader().getResource("").getFile();
+    private static final String POM_NAME = "pom.xml";
+    private static final String GIT_IGNORE = ".gitignore";
+    private static final String OUT_PATH = FileUtil.class.getClassLoader().getResource("").getFile();
     private static final String RAW_GROUP_ID = "com.doggy.groupId";
     private static final String RAW_ARTIFACT_ID = "doggy-module";
     private final String groupId;
@@ -46,6 +47,8 @@ public class PackageGenerator {
             FileUtil.create(getMainResourcesPath(), ".gitkeeper");
             FileUtil.create(getTestJavaPath(), ".gitkeeper");
             FileUtil.create(getTestResourcePath(), ".gitkeeper");
+        }else{
+            FileUtil.cp(rawPath+GIT_IGNORE, artifactPath + GIT_IGNORE);
         }
         copyPackages();
         copyResources();
