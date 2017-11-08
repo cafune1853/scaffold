@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String groupId = "com.doggy.groupId.x";
-        String artifactId = "doggy-modulex-y";
+        String groupId = "com.doggy";
+        String artifactId = "springmvc-learning";
         String basePackages = StringUtil.getPackagePath(groupId, artifactId, ".");
         List<ReplaceEntry> replaceEntryList = Arrays.asList(
                 new ReplaceEntry("com.doggy.groupId.doggy.module", basePackages),
