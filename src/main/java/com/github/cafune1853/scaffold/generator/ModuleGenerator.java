@@ -98,7 +98,7 @@ public class ModuleGenerator {
 	}
 	
 	private String getRawTestResourcesPath() {
-		return rawPath + "src" + File.separator + "main" + File.separator + "resources" + File.separator;
+		return rawPath + "src" + File.separator + "test" + File.separator + "resources" + File.separator;
 	}
 	
 	private String getRawWebappPath() {
