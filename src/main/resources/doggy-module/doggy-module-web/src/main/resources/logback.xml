@@ -28,43 +28,13 @@
         </encoder>
     </appender>
 
-    <appender name="daoUpdateLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="controllerLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>logs/dao.log</File>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %X{traceId} %X{userId} %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>logs/bak_dao/dao.%d{yyyy-MM-dd}.log</FileNamePattern>
-            <MaxHistory>7</MaxHistory>
-            <CleanHistoryOnStart>true</CleanHistoryOnStart>
-        </rollingPolicy>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
-    </appender>
-
-    <appender name="dubboAccessLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>logs/dubbo_access.log</File>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %X{traceId} %X{userId} %msg%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/bak_dubbo_access/dubbo_access.%d{yyyy-MM-dd}.log</FileNamePattern>
-            <MaxHistory>7</MaxHistory>
-            <CleanHistoryOnStart>true</CleanHistoryOnStart>
-        </rollingPolicy>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
-    </appender>
-
-    <appender name="remoteLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>logs/remote.log</File>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %X{traceId} %X{userId} %msg%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/bak_dubbo_access/dubbo_access.%d{yyyy-MM-dd}.log</FileNamePattern>
             <MaxHistory>7</MaxHistory>
             <CleanHistoryOnStart>true</CleanHistoryOnStart>
         </rollingPolicy>
@@ -83,34 +53,14 @@
         <appender-ref ref="errorLogFile"/>
     </appender>
 
-    <appender name="daoUpdateLogFileAsync" class="ch.qos.logback.classic.AsyncAppender">
+    <appender name="controllerLogFileAsync" class="ch.qos.logback.classic.AsyncAppender">
         <queueSize>512</queueSize>
-        <appender-ref ref="daoUpdateLogFile"/>
+        <appender-ref ref="controllerLogFile"/>
     </appender>
-
-    <appender name="dubboAccessLogFileAsync" class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>512</queueSize>
-        <appender-ref ref="dubboAccessLogFile"/>
-    </appender>
-
-    <appender name="remoteLogFileAsync" class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>512</queueSize>
-        <appender-ref ref="remoteLogFile"/>
-    </appender>
-
-    <!-- 服务访问数据库的日志 -->
-    <logger name="Dao" level="DEBUG" additivity="true">
-        <appender-ref ref="daoUpdateLogFileAsync"/>
-    </logger>
 
     <!-- 外部调用本地service服务的日志 -->
-    <logger name="Access" level="DEBUG" additivity="true">
-        <appender-ref ref="dubboAccessLogFileAsync"/>
-    </logger>
-
-    <!-- 调用外部服务的日志 -->
-    <logger name="Remote" level="DEBUG" additivity="true">
-        <appender-ref ref="remoteLogFileAsync"/>
+    <logger name="Controller" level="DEBUG" additivity="true">
+        <appender-ref ref="controllerLogFileAsync"/>
     </logger>
 
     <!-- 线上环境不要使用ConsoleAppender -->
