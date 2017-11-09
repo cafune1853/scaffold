@@ -3,7 +3,9 @@ package com.doggy.groupId.doggy.module.web.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +17,16 @@ import java.io.IOException;
  * Created on 2017-08-08.
  */
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/")
 public class TestController {
-	@RequestMapping("test")
-	public String test(Model model) throws IOException {
-		model.addAttribute("k", "v");
-		return "index";
+	@RequestMapping("upload")
+	public String upload(@RequestPart("file") MultipartFile file, Model model) {
+		model.addAttribute("fileName", file.getOriginalFilename());
+		return "upload-success";
+	}
+	
+	@RequestMapping("error")
+	public String error() {
+		throw new RuntimeException();
 	}
 }
