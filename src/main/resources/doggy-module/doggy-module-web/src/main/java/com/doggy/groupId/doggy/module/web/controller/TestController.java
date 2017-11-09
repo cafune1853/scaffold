@@ -29,4 +29,10 @@ public class TestController {
 	public String error() {
 		throw new RuntimeException();
 	}
+	
+	@RequestMapping("display")
+	public String display(Model model){
+		model.addAttribute("k", "v");
+		return "display";
+	}
 }
