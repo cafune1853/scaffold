@@ -5,8 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-<p th:text="${k}"/>
-<p th:text="#{test.param}" />
+<p th:text="${k}"></p>
+<p th:text="#{test.param}"></p>
+<p th:text="${#uris.escapeQueryParam('编码吧')}"></p>
+<p th:text="${'这是k:'+ k}"></p>
+<p th:text="|this is : ${k}|"></p>
+<p th:text="${k == 'vv'?true:false}"></p>
+<p th:text="${k} == 'vv'?false:true"></p>
+<p data-th-text="${#dates.format()}"></p>
 
 </body>
 </html>

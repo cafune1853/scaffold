@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartResolver;
@@ -79,7 +81,16 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter implements 
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
     }
-
+    
+    /**
+     *     添加格式转换器，可以直接用在thymeleaf中，${{}}
+     */
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addFormatter(new DateFormatter());
+    }
+    
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
