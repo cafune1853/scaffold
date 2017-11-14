@@ -1,16 +1,18 @@
 <configuration scan="false" debug="false">
     <appender name="allLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>logs/app.log</File>
+        <File>logs/all.log</File>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
+            <level>INFO</level>
         </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${catalina.home}/logs/bak_app/app-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>7</maxHistory>
-        </rollingPolicy>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread]- %-5level %logger{12} %X{traceId} %X{userId} %msg%n</pattern>
         </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.home}/logs/bak_app/all-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <maxFileSize>2GB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
     </appender>
 
     <appender name="errorLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -18,29 +20,31 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${catalina.home}/logs/bak_error/error-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread]-[%X{requestId}] %-5level %logger{12} %X{traceId} %X{userId} %msg%n
-            </pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread]-[%X{requestId}] %-5level %logger{12} %X{traceId} %X{userId} %msg%n</pattern>
         </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.home}/logs/bak_error/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <maxFileSize>2GB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
     </appender>
 
     <appender name="controllerLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>logs/dao.log</File>
+        <File>logs/controller.log</File>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %X{traceId} %X{userId} %msg%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/bak_dao/dao.%d{yyyy-MM-dd}.log</FileNamePattern>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>logs/bak_controller/controller.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
             <MaxHistory>7</MaxHistory>
-            <CleanHistoryOnStart>true</CleanHistoryOnStart>
+            <maxFileSize>2GB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
     </appender>
 
     <appender name="allLogFileAsync" class="ch.qos.logback.classic.AsyncAppender">
