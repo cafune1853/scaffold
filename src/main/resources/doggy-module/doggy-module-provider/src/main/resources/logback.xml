@@ -58,18 +58,18 @@
         </filter>
     </appender>
 
-    <appender name="remoteLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>logs/remote.log</File>
+    <appender name="remoteErrorLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/remoteError.log</File>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %X{traceId} %X{userId} %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/bak_dubbo_access/dubbo_access.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>logs/bak_remote_error/remoteError.%d{yyyy-MM-dd}.log</FileNamePattern>
             <MaxHistory>7</MaxHistory>
             <CleanHistoryOnStart>true</CleanHistoryOnStart>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
+            <level>ERROR</level>
         </filter>
     </appender>
 
@@ -99,17 +99,17 @@
     </appender>
 
     <!-- 服务访问数据库的日志 -->
-    <logger name="Dao" level="DEBUG" additivity="true">
+    <logger name="Dao" level="INFO" additivity="true">
         <appender-ref ref="daoUpdateLogFileAsync"/>
     </logger>
 
     <!-- 外部调用本地service服务的日志 -->
-    <logger name="Access" level="DEBUG" additivity="true">
+    <logger name="Access" level="INFO" additivity="true">
         <appender-ref ref="dubboAccessLogFileAsync"/>
     </logger>
 
     <!-- 调用外部服务的日志 -->
-    <logger name="Remote" level="DEBUG" additivity="true">
+    <logger name="Remote" level="INFO" additivity="true">
         <appender-ref ref="remoteLogFileAsync"/>
     </logger>
 
